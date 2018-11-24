@@ -40,3 +40,22 @@ class Character:
         self.current_sprite += 1
         self.current_sprite %= len(self.sprite_matrix[0])
 
+    def check_collision_with_walls(self, walls):
+        collided = False
+        for wall in walls:
+            if self.rect.colliderect(wall.rect):
+                collided = True
+        return collided
+
+    def check_collision_with_seed(self, seed):
+        if self.rect.colliderect(seed.rect):
+            return True
+        else:
+            return False
+
+    def check_collision_with_ghost(self, ghost):
+        if self.rect.colliderect(ghost.rect):
+            return True
+        else:
+            return False
+
