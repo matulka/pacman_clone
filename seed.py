@@ -1,14 +1,12 @@
-import pygame
-from constants import WHITE, SMALL_SEED_RADIUS
-
-
 class Seed:
     def __init__(self, coordinates):
         self.x, self.y = coordinates
-        self.radius = -1
-        # #по сути это абстрактный класс, поэтому настоящее значение радиуса будет определено в дочерних классах
+        self.sprite = 0
         self.active = True
+        self.rect = self.sprite.get_rect()
+        self.rect.left = self.x
+        self.rect.top = self.y
 
     def draw(self, screen):
         if self.active:
-            pygame.draw.circle(screen, WHITE, self.coordinates, self.radius, 0)
+            screen.blit(self.sprite, self.rect)
