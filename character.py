@@ -1,3 +1,4 @@
+
 from constants import CHARACTER_SPEED, LEFT, RIGHT, DOWN, UP
 
 
@@ -38,6 +39,4 @@ class Character:
         screen.blit(sprite, self.rect)
         self.current_sprite += 1
         self.current_sprite %= len(self.sprite_matrix[0])
-
-
 
