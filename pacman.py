@@ -50,4 +50,3 @@ class Pacman(Character):
         self.move()
         if self.check_collision_with_walls(map.walls):
             self.move_back()
->>>>>>> 3c80029356aec5b8a65c4d7e6e01336b5d7103c3
