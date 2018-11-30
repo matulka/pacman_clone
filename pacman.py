@@ -1,6 +1,7 @@
 import pygame as pg
 from character import Character
-from constants import LEFT, RIGHT, DOWN, UP
+from constants import CHARACTER_SPEED, CHARACTER_HEIGHT, CHARACTER_WIDTH, LEFT,\
+    RIGHT, DOWN, UP, PACMAN_RADIUS, YELLOW, BGCOLOR, GAMEOVER
 
 
 class Pacman(Character):
@@ -20,11 +21,30 @@ class Pacman(Character):
             if event.key == pg.K_s:
                 self.direction = DOWN
 
-    def logic(self, game):
-        for ghost in game.map.ghosts:
+    def check_collision_with_walls(self, walls):
+        collided = False
+        for wall in walls:
+            if self.rect.colliderect(wall.rect):
+                collided = True
+        return collided
+
+    def check_collision_with_seed(self, seed):
+        if self.rect.colliderect(seed.rect):
+            return True
+        else:
+            return False
+
+    def check_collision_with_ghost(self, ghost):
+        if self.rect.colliderect(ghost.rect):
+            return True
+        else:
+            return False
+
+    def logic(self, map):
+        for ghost in map.ghosts:
             if self.check_collision_with_ghost(ghost):
-                game.gameover = True
-        for seed in game.map.seeds:
+                GAMEOVER = True
+        for seed in map.seeds:
             if self.check_collision_with_seed(seed):
                 seed.make_effect()
         self.move()
