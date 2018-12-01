@@ -1,10 +1,10 @@
 import pygame as pg
-from constants import Black, White, width__scr, height__scr
+from constants import BLACK, WHITE, WIDTH_SCR, HEIGHT_SCR
 from classes import Map
 
 
 gameover = False
-size = width_scr, height_scr = width__scr, height__scr
+size = width_scr, height_scr = WIDTH_SCR, HEIGHT_SCR
 screen = None
 
 def init():
@@ -22,16 +22,13 @@ def handle_events():
 
 def init_map():
     map = Map()
-    map.init_matrix()
-    map.init_walls()
-    map.draw()
 
 def main():
     global gameover
     init()
     while not gameover:
         handle_events()
-        screen.fill(Black)
+        screen.fill(BLACK)
         init_map()
         pg.display.flip()
         pg.time.wait(20)
