@@ -6,9 +6,36 @@ from constants import CHARACTER_SPEED, CHARACTER_HEIGHT, CHARACTER_WIDTH, LEFT,\
 
 class Pacman(Character):
 
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, wall_size):
         super().__init__(coordinates)
-        self.death_sprites = [] #SHOULD ADD SPRITES
+        none = pg.image.load('sprites/pacman/pacman0.png')
+        left1 = pg.image.load('sprites/pacman/pacman_left1.png')
+        left2 = pg.image.load('sprites/pacman/pacman_left2.png')
+        right1 = pg.image.load('sprites/pacman/pacman_right1.png')
+        right2 = pg.image.load('sprites/pacman/pacman_right2.png')
+        down1 = pg.image.load('sprites/pacman/pacman_down1.png')
+        down2 = pg.image.load('sprites/pacman/pacman_down2.png')
+        up1 = pg.image.load('sprites/pacman/pacman_up1.png')
+        up2 = pg.image.load('sprites/pacman/pacman_up2.png')
+        self.sprite_matrix = [[none, left1, left2], [none, right1, right2], [none, up1, up2], [none, down1, down2]]
+        for i in len(self.sprite_matrix):
+            for j in len(self.sprite_matrix[i]):
+                self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j], (wall_size, wall_size))
+
+        death1 = pg.image.load('sprites/death/death1.png')
+        death2 = pg.image.load('sprites/death/death2.png')
+        death3 = pg.image.load('sprites/death/death3.png')
+        death4 = pg.image.load('sprites/death/death4.png')
+        death5 = pg.image.load('sprites/death/death5.png')
+        death6 = pg.image.load('sprites/death/death6.png')
+        death7 = pg.image.load('sprites/death/death7.png')
+        death8 = pg.image.load('sprites/death/death8.png')
+        death9 = pg.image.load('sprites/death/death9.png')
+        death10 = pg.image.load('sprites/death/death10.png')
+        death11 = pg.image.load('sprites/death/death11.png')
+        self.death_sprites = [death1, death2, death3, death4, death5, death6, death7, death8, death9, death10, death11]
+        for i in len(self.death_sprites):
+            self.death_sprites[i] = pg.transform.scale(self.death_sprites[i], (wall_size, wall_size))
 
     def check_event(self, event, map):
         if event.type == pg.KEYDOWN:
@@ -23,25 +50,6 @@ class Pacman(Character):
                 self.direction = DOWN
             if not self.try_move(map):
                 self.direction = cur_direction
-
-    def check_collision_with_walls(self, walls):
-        collided = False
-        for wall in walls:
-            if self.rect.colliderect(wall.rect):
-                collided = True
-        return collided
-
-    def check_collision_with_seed(self, seed):
-        if self.rect.colliderect(seed.rect):
-            return True
-        else:
-            return False
-
-    def check_collision_with_ghost(self, ghost):
-        if self.rect.colliderect(ghost.rect):
-            return True
-        else:
-            return False
 
     def logic(self, map, game):
         for ghost in map.ghosts:

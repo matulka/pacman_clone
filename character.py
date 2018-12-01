@@ -3,7 +3,6 @@ from constants import CHARACTER_SPEED, LEFT, RIGHT, DOWN, UP
 
 
 class Character:
-    sprite_matrix = [[]]
 
     def __init__(self, coordinates):
         self.x, self.y = coordinates
