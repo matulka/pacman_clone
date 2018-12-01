@@ -8,3 +8,4 @@ UP = 2
 DOWN = 3
 YELLOW = (255, 255, 0)
 BGCOLOR = (0, 0, 0)
+FPS = 60
