@@ -18,6 +18,7 @@ class Game:
         self.point_counter = 0
         self.high_score = 0
         self.font_size = (self.height - self.map.height) // 8
+        self.death_counter = 0
         self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
 
     def main_loop(self):
@@ -31,7 +32,7 @@ class Game:
          for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.gameover = True
-            #self.map.check_event(event)
+            self.map.check_event(event)
 
     def process_drawing(self):
         self.screen.fill(BGCOLOR)
