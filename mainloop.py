@@ -17,7 +17,7 @@ class Game:
         self.fear = False
         self.point_counter = 0
         self.high_score = 0
-        self.font_size = (self.height - self.map.height) // 8
+        self.font_size = self.map.top // 4
         self.death_counter = 0
         self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
 
