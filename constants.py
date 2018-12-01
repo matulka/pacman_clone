@@ -2,3 +2,4 @@ BLACK = (0, 0, 0, 0)
 WHITE = (255, 255, 255)
 MAP_PATH = "map_scheme.txt"
 WIDTH_SCR, HEIGHT_SCR = 650, 650
+SPACE_BLOCKS = 10

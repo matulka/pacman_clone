@@ -1,5 +1,5 @@
 import pygame as pg
-from constants import BLACK, WHITE, MAP_PATH, WIDTH_SCR, HEIGHT_SCR
+from constants import BLACK, WHITE, MAP_PATH, WIDTH_SCR, HEIGHT_SCR, SPACE_BLOCKS
 
 gameover = False
 size = width_scr, height_scr = WIDTH_SCR, HEIGHT_SCR
@@ -29,7 +29,8 @@ class Map:
         self.draw()
 
     def init_constants(self):
-        self.width_block = self.height_block = (WIDTH_SCR-5*len(self.matrix))//(len(self.matrix[0]))
+        n = len(self.matrix[0])
+        self.width_block = self.height_block = ((width_scr+SPACE_BLOCKS)/n)-SPACE_BLOCKS
         print(self.width_block, self.height_block)
 
     def get_width_height(self):
@@ -47,13 +48,11 @@ class Map:
             self.matrix.append(data_local)
 
     def init_walls(self):
-        x_del = len(self.matrix[0])
-        y_del = len(self.matrix)
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 1:
-                    wall_local = Wall(j * (height_scr // x_del),
-                                      i * (height_scr // x_del)+width_scr//10,
+                    wall_local = Wall(j * (self.width_block + SPACE_BLOCKS),
+                                      i * (self.height_block + SPACE_BLOCKS)+width_scr//10,
                                       self.width_block, self.height_block)
                     self.walls.append(wall_local)
 
