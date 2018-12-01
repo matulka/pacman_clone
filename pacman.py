@@ -55,6 +55,14 @@ class Pacman(Character):
         self.move()
         if self.check_collision_with_walls(map.walls):
             self.move_back()
+        if self.x < 0:
+            self.x = map.width - self.rect.width
+        if self.x + self.rect.width > map.width:
+            self.x = 0
+        if self.y < 0:
+            self.y = map.height - self.rect.height
+        if self.y + self.rect.height > map.height:
+            self.y = 0
 
     def death_animation(self, screen):
         for i in range(len(self.death_sprites)):
