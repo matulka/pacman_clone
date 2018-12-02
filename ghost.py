@@ -17,25 +17,28 @@ class Ghost(Character):
         up1 = pg.image.load('sprites/ghost/' + self.type + '/' + path_part + '_up1.png')
         up2 = pg.image.load('sprites/ghost/' + self.type + '/' + path_part + '_up2.png')
         self.sprite_matrix = [[left1, left2], [right1, right2], [up1, up2], [down1, down2]]
-        for i in len(self.sprite_matrix):
-            for j in len(self.sprite_matrix[i]):
-                self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j], (wall_size, wall_size))
+        for i in range(len(self.sprite_matrix)):
+            for j in range(len(self.sprite_matrix[i])):
+                self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j], (int(wall_size*1.5),
+                                                                                         int(wall_size*1.5)))
 
         blue1 = pg.image.load('sprites/fear/fear_blue1.png')
         blue2 = pg.image.load('sprites/fear/fear_blue2.png')
         white1 = pg.image.load('sprites/fear/fear_white1.png')
         white2 = pg.image.load('sprites/fear/fear_white2.png')
         self.fear_sprites = [blue1, blue2, white1, white2]
-        for i in len(self.fear_sprites):
-            self.fear_sprites[i] = pg.transform.scale(self.fear_sprites[i], (wall_size, wall_size))
+        for i in range(len(self.fear_sprites)):
+            self.fear_sprites[i] = pg.transform.scale(self.fear_sprites[i], (int(wall_size*1.5),
+                                                                             int(wall_size*1.5)))
 
         down = pg.image.load('sprites/eyes/eyes_down.png')
         right = pg.image.load('sprites/eyes/eyes_right.png')
         left = pg.image.load('sprites/eyes/eyes_left.png')
         up = pg.image.load('sprites/eyes/eyes_up.png')
         self.eyes_sprites = [left, right, up, down]
-        for i in len(self.eyes_sprites):
-            self.eyes_sprites[i] = pg.transform.scale(self.eyes_sprites[i], (wall_size, wall_size))
+        for i in range(len(self.eyes_sprites)):
+            self.eyes_sprites[i] = pg.transform.scale(self.eyes_sprites[i], (int(wall_size*1.5),
+                                                                             int(wall_size*1.5)))
 
     def logic(self, pacman):
         possible_directions = map.check_directions(self.coordinates)  # #этот метод вернет возможные направления

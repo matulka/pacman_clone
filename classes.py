@@ -37,13 +37,12 @@ class Map:
         self.draw(screen)
 
     def init_pacman(self):
-        # for i in range(len(self.matrix)):
-        #     for j in range(len(self.matrix[i])):
-        #         if self.matrix[i][j] == 6:
-        #             coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block // 2,
-        #                       i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
-        #             pacman = Pacman(coords, (self.width_block, self.height_block))
-        pass
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 6:
+                    coords = (j * (self.width_block + SPACE_BLOCKS)-self.width_block//2.5,
+                              i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
+                    self.pacman = Pacman(coords, self.width_block)
 
     def init_seeds(self):
         for i in range(len(self.matrix)):
@@ -61,14 +60,16 @@ class Map:
 
 
     def init_ghosts(self):
-        # for i in range(len(self.matrix)):
-        #     for j in range(len(self.matrix[i])):
-        #         if self.matrix[i][j] == 9:
-        #             coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block // 2,
-        #                            i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
-        #             ghost_local = Ghost(coords, 'blue', self.width_block)
-        #             self.ghosts.append(ghost_local)
-        pass
+        colors = ['blue', 'red', 'orange', 'pink']
+        count = 0
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 9:
+                    coords = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//2.5,
+                                   i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
+                    ghost_local = Ghost(coords, colors[count], self.width_block)
+                    self.ghosts.append(ghost_local)
+                    count += 1
 
 
     def refresh(self):
@@ -113,6 +114,8 @@ class Map:
 
         for i in range(len(self.ghosts)):
             self.ghosts[i].draw(screen)
+
+        self.pacman.draw(screen)
 
     def check_event(self):
         pass

@@ -18,9 +18,10 @@ class Pacman(Character):
         up1 = pg.image.load('sprites/pacman/pacman_up1.png')
         up2 = pg.image.load('sprites/pacman/pacman_up2.png')
         self.sprite_matrix = [[none, left1, left2], [none, right1, right2], [none, up1, up2], [none, down1, down2]]
-        for i in len(self.sprite_matrix):
-            for j in len(self.sprite_matrix[i]):
-                self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j], (wall_size, wall_size))
+        for i in range(len(self.sprite_matrix)):
+            for j in range(len(self.sprite_matrix[i])):
+                self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j], (int(wall_size*1.8),
+                                                                                         int(wall_size*1.8)))
 
         death1 = pg.image.load('sprites/death/death1.png')
         death2 = pg.image.load('sprites/death/death2.png')
@@ -34,8 +35,9 @@ class Pacman(Character):
         death10 = pg.image.load('sprites/death/death10.png')
         death11 = pg.image.load('sprites/death/death11.png')
         self.death_sprites = [death1, death2, death3, death4, death5, death6, death7, death8, death9, death10, death11]
-        for i in len(self.death_sprites):
-            self.death_sprites[i] = pg.transform.scale(self.death_sprites[i], (wall_size, wall_size))
+        for i in range(len(self.death_sprites)):
+            self.death_sprites[i] = pg.transform.scale(self.death_sprites[i], (int(wall_size*1.8),
+                                                                               int(wall_size*1.8)))
 
     def check_event(self, event, map):
         if event.type == pg.KEYDOWN:
