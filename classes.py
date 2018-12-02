@@ -22,15 +22,17 @@ class Map:
     def __init__(self):
         self.height, self.width, self.top, self.bottom = None, None, None, None
         self.width_block, self.height_block = None, None
+        self.ghosts_teleport = None
+        self.pacman = None
         self.walls = []
         self.seeds = []
         self.ghosts = []
         self.matrix = []
-        self.pacman = None
         self.init_matrix()
         self.init_constants()
         self.init_walls()
         self.get_width_height()
+        self.init_ghosts_teleport()
         self.init_pacman()
         self.init_seeds()
         self.init_ghosts()
@@ -71,6 +73,12 @@ class Map:
                     self.ghosts.append(ghost_local)
                     count += 1
 
+    def init_ghosts_teleport(self):
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 2:
+                    self.ghosts_teleport = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//3,
+                                   i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 10)
 
     def refresh(self):
         self.init_pacman()
