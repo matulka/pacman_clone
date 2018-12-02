@@ -16,7 +16,7 @@ class Menu:
         self.gameover = False
         self.phase = 0
         pygame.font.init()
-        self.my_font = pygame.font.Font('BebasNeue Bold.ttf', 60)
+        self.my_font = pygame.font.Font('BebasNeueBold.ttf', 60)
         self.prepare()
 
     def prepare(self):
