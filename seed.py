@@ -1,5 +1,5 @@
 import pygame as pg
-from constants import WHITE
+from constants import YELLOW
 
 
 class Seed:
@@ -9,4 +9,4 @@ class Seed:
 
     def draw(self, screen):
         if self.active:
-            pg.draw.rect(screen, WHITE, self.rect, 0)
+            pg.draw.rect(screen, YELLOW, self.rect, 0)

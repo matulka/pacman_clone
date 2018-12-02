@@ -13,3 +13,4 @@ class SmallSeed(Seed):
         if self.active:
             game.point_counter += SMALL_SEED_POINTS
             self.active = False
+

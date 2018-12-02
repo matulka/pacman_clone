@@ -1,10 +1,10 @@
 import pygame as pg
-from constants import BLACK, WHITE, WIDTH_SCR, HEIGHT_SCR
+from constants import BLACK, WHITE, SCR_HEIGHT, SCR_WIDTH
 from classes import Map
 
 
 gameover = False
-size = width_scr, height_scr = WIDTH_SCR, HEIGHT_SCR
+size = width_scr, height_scr = SCR_HEIGHT, SCR_WIDTH
 screen = None
 
 def init():

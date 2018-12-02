@@ -1,8 +1,12 @@
 import pygame as pg
-from constants import BLACK, WHITE, MAP_PATH, WIDTH_SCR, HEIGHT_SCR, SPACE_BLOCKS
+from constants import BLACK, WHITE, MAP_PATH, SCR_HEIGHT, SCR_WIDTH, SPACE_BLOCKS, BIG_SEED_SIZE, BLUE
+from smallseed import SmallSeed
+from bigseed import BigSeed
+from ghost import Ghost
+from pacman import Pacman
 
 gameover = False
-size = width_scr, height_scr = WIDTH_SCR, HEIGHT_SCR
+size = width_scr, height_scr = SCR_HEIGHT, SCR_WIDTH
 screen = pg.display.set_mode(size)
 
 class Wall:
@@ -22,16 +26,60 @@ class Map:
         self.seeds = []
         self.ghosts = []
         self.matrix = []
+        self.pacman = None
         self.init_matrix()
         self.init_constants()
         self.init_walls()
         self.get_width_height()
-        self.draw()
+        self.init_pacman()
+        self.init_seeds()
+        self.init_ghosts()
+        self.draw(screen)
+
+    def init_pacman(self):
+        # for i in range(len(self.matrix)):
+        #     for j in range(len(self.matrix[i])):
+        #         if self.matrix[i][j] == 6:
+        #             coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block // 2,
+        #                       i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
+        #             pacman = Pacman(coords, (self.width_block, self.height_block))
+        pass
+
+    def init_seeds(self):
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 3:
+                    coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block//3,
+                              i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
+                    small_seed_local = SmallSeed(coords)
+                    self.seeds.append(small_seed_local)
+                if self.matrix[i][j] == 5:
+                    coords = (j * (self.width_block + SPACE_BLOCKS)+BIG_SEED_SIZE//1.1,
+                              i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 8.9)
+                    big_seed_local = BigSeed(coords)
+                    self.seeds.append(big_seed_local)
+
+
+    def init_ghosts(self):
+        # for i in range(len(self.matrix)):
+        #     for j in range(len(self.matrix[i])):
+        #         if self.matrix[i][j] == 9:
+        #             coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block // 2,
+        #                            i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
+        #             ghost_local = Ghost(coords, 'blue', self.width_block)
+        #             self.ghosts.append(ghost_local)
+        pass
+
+
+    def refresh(self):
+        self.init_pacman()
+        self.init_seeds()
+        self.init_ghosts()
+
 
     def init_constants(self):
         n = len(self.matrix[0])
         self.width_block = self.height_block = ((width_scr+SPACE_BLOCKS)/n)-SPACE_BLOCKS
-        print(self.width_block, self.height_block)
 
     def get_width_height(self):
         self.width = width_scr
@@ -56,7 +104,7 @@ class Map:
                                       self.width_block, self.height_block)
                     self.walls.append(wall_local)
 
-    def draw(self):
+    def draw(self, screen):
         for i in range(len(self.walls)):
             self.walls[i].draw(screen)
 
