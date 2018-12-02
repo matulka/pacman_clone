@@ -7,7 +7,7 @@ from constants import CHARACTER_SPEED, CHARACTER_HEIGHT, CHARACTER_WIDTH, LEFT,\
 class Pacman(Character):
 
     def __init__(self, coordinates, wall_size):
-        super().__init__(coordinates)
+        super().__init__(coordinates, wall_size)
         none = pg.image.load('sprites/pacman/pacman0.png')
         left1 = pg.image.load('sprites/pacman/pacman_left1.png')
         left2 = pg.image.load('sprites/pacman/pacman_left2.png')

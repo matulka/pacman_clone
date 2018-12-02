@@ -5,7 +5,7 @@ from constants import RIGHT, LEFT, DOWN, UP
 
 class Ghost(Character):
     def __init__(self, coordinates, ghost_type, wall_size):
-        super().__init__(coordinates)
+        super().__init__(coordinates, wall_size)
         self.type = ghost_type  # #blue, red, orange, pink
         path_part = 'ghost_' + self.type
         left1 = pg.image.load('sprites/ghost/' + self.type + '/' + path_part + '_left1.png')

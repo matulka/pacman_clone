@@ -1,14 +1,15 @@
-
+import pygame as pg
 from constants import CHARACTER_SPEED, LEFT, RIGHT, DOWN, UP
 
 
 class Character:
 
-    def __init__(self, coordinates):
+    def __init__(self, coordinates, wall_size):
         self.x, self.y = coordinates
+        self.starting_coordinates = coordinates
         self.speed = CHARACTER_SPEED
         self.direction = -1  # #Направление движения, значения в константах
-        self.rect = self.sprite_matrix[0][0].get_rect()
+        self.rect = pg.Rect(self.x, self.y, wall_size, wall_size)
         self.width = self.rect.width
         self.height = self.rect.height
         self.current_sprite = 0
