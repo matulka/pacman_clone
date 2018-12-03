@@ -41,7 +41,7 @@ class Map:
     def init_pacman(self):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 6:
+                if self.matrix[i][j] == 5:
                     coords = (j * (self.width_block + SPACE_BLOCKS)-self.width_block//2.5,
                               i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
                     self.pacman = Pacman(coords, self.width_block)
@@ -49,12 +49,12 @@ class Map:
     def init_seeds(self):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 3:
+                if self.matrix[i][j] == 6:
                     coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block//3,
                               i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
                     small_seed_local = SmallSeed(coords)
                     self.seeds.append(small_seed_local)
-                if self.matrix[i][j] == 5:
+                if self.matrix[i][j] == 7:
                     coords = (j * (self.width_block + SPACE_BLOCKS)+BIG_SEED_SIZE//1.1,
                               i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 8.9)
                     big_seed_local = BigSeed(coords)
@@ -63,20 +63,19 @@ class Map:
 
     def init_ghosts(self):
         colors = ['blue', 'red', 'orange', 'pink']
-        count = 0
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 9:
+                if self.matrix[i][j] == 1 or self.matrix[i][j] == 2 or self.matrix[i][j] == 3\
+                        or self.matrix[i][j] == 4:
                     coords = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//2.5,
                                    i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
-                    ghost_local = Ghost(coords, colors[count], self.width_block)
+                    ghost_local = Ghost(coords, colors[self.matrix[i][j]-1], self.width_block)
                     self.ghosts.append(ghost_local)
-                    count += 1
 
     def init_ghosts_teleport(self):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 2:
+                if self.matrix[i][j] == 9:
                     self.ghosts_teleport = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//3,
                                    i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 10)
 
@@ -107,7 +106,7 @@ class Map:
     def init_walls(self):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
-                if self.matrix[i][j] == 1:
+                if self.matrix[i][j] == 8:
                     wall_local = Wall(j * (self.width_block + SPACE_BLOCKS),
                                       i * (self.height_block + SPACE_BLOCKS)+width_scr//10,
                                       self.width_block, self.height_block)
@@ -125,6 +124,5 @@ class Map:
 
         self.pacman.draw(screen)
 
-    def check_event(self):
+    def check_event(self, event):
         pass
-
