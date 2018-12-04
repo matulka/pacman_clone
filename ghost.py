@@ -62,6 +62,7 @@ class Ghost(Character):
                                                           (int(wall_size*1.5), int(wall_size*1.5)))
 
     def change_sprites(self, needed_condition): # # needed_condition = {fear, normal, death}
+        self.current_sprite = 0
         if needed_condition == 'normal':
             self.sprite_matrix = self.normal_sprites
         elif needed_condition == 'fear':
@@ -86,11 +87,12 @@ class Ghost(Character):
     def logic(self, pacman, game):
         if self.released:
             possible_directions = self.get_possible_directions(game.map)
-            gh_x, gh_y = self.x, self.y
+            #print(possible_directions)
+            gh_x, gh_y = self.rect.x, self.rect.y
             needed_directions = []
 
             if self.alive:
-                vector_x, vector_y = pacman.x - gh_x, pacman.y - gh_y
+                vector_x, vector_y = pacman.rect.x - gh_x, pacman.rect.y - gh_y
                 if game.fear:
                     vector_x, vector_y = -1 * vector_x, -1 * vector_y
                 elif self.sprite_matrix == self.fear_sprites:
@@ -114,7 +116,7 @@ class Ghost(Character):
                 self.direction = possible_directions[0]
 
             if not self.alive and vector_x == 0 and vector_y == 0:
-                self.x, self.y = self.starting_coordinates
+                self.rect.x, self.rect.y = self.starting_coordinates
                 self.released = False
                 self.time_to_release = DEATH_RELEASE_TIME
                 self.direction = DOWN
@@ -132,4 +134,4 @@ class Ghost(Character):
                     self.released = True
                     self.time_to_release = 0
                     self.starting_time = None
-                    self.x, self.y = self.teleport_coordinates
+                    self.rect.x, self.rect.y = self.teleport_coordinates

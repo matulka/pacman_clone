@@ -1,6 +1,7 @@
 import pygame as pg
 from character import Character
 from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS
+from math import fabs
 
 
 class Pacman(Character):
@@ -16,7 +17,8 @@ class Pacman(Character):
         down2 = pg.image.load('sprites/pacman/pacman_down2.png')
         up1 = pg.image.load('sprites/pacman/pacman_up1.png')
         up2 = pg.image.load('sprites/pacman/pacman_up2.png')
-        self.sprite_matrix = [[none, left1, left2], [none, right1, right2], [none, up1, up2], [none, down1, down2]]
+        self.sprite_matrix = [[none, left1, left2, left1, none], [none, right1, right2, right1, none],\
+                              [none, up1, up2, up1, none], [none, down1, down2, down1, none]]
         for i in range(len(self.sprite_matrix)):
             for j in range(len(self.sprite_matrix[i])):
                 self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j], (int(wall_size*1.6),
@@ -61,24 +63,25 @@ class Pacman(Character):
                         game.death_counter += 1
                         map.refresh()
                     else:
+                        print('dead')
                         ghost.alive = False
                         game.point_counter += GHOST_POINTS
                         ghost.change_sprites('death')
 
         for seed in map.seeds:
             if self.check_collision_with_seed(seed):
-                seed.make_effect()
+                seed.make_effect(game)
         self.move()
         if self.check_collision_with_walls(map.walls):
             self.move_back()
-        if self.x < 0:
-            self.x = map.width - self.rect.width
-        if self.x + self.rect.width > map.width:
-            self.x = 0
-        if self.y < 0:
-            self.y = map.height - self.rect.height
-        if self.y + self.rect.height > map.height:
-            self.y = 0
+        if self.rect.x < 0:
+            self.rect.x = map.width - self.rect.width
+        if self.rect.x + self.rect.width > int(fabs(map.width)):
+            self.rect.x = 0
+        if self.rect.y < map.top:
+            self.rect.y = map.top + int(fabs(map.height)) - self.rect.height
+        if self.rect.y + self.rect.height > int(fabs(map.height)) + map.top:
+            self.rect.y = map.top
 
     def death_animation(self, screen):
         for i in range(len(self.death_sprites)):

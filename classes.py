@@ -1,13 +1,10 @@
 import pygame as pg
-from constants import BLACK, WHITE, MAP_PATH, SCR_HEIGHT, SCR_WIDTH, SPACE_BLOCKS, BIG_SEED_SIZE, BLUE
+from constants import WHITE, MAP_PATH, SCR_HEIGHT, SCR_WIDTH, SPACE_BLOCKS, BIG_SEED_SIZE
 from smallseed import SmallSeed
 from bigseed import BigSeed
 from ghost import Ghost
 from pacman import Pacman
-
-gameover = False
-size = width_scr, height_scr = SCR_HEIGHT, SCR_WIDTH
-screen = pg.display.set_mode(size)
+import sys
 
 
 class Wall:
@@ -21,7 +18,7 @@ class Wall:
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, screen):
         self.height, self.width, self.top, self.bottom = None, None, None, None
         self.width_block, self.height_block = None, None
         self.ghosts_teleport = None
@@ -88,10 +85,10 @@ class Map:
 
     def init_constants(self):
         n = len(self.matrix[0])
-        self.width_block = self.height_block = ((width_scr+SPACE_BLOCKS)/n)-SPACE_BLOCKS
+        self.width_block = self.height_block = ((SCR_WIDTH+SPACE_BLOCKS)/n)-SPACE_BLOCKS
 
     def get_width_height(self):
-        self.width = width_scr
+        self.width = SCR_WIDTH
         self.height = self.walls[0].y-self.walls[-1].y
         self.top, self.bottom = self.walls[0].y, self.walls[-1].y+self.height_block
 
@@ -109,7 +106,7 @@ class Map:
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 8:
                     wall_local = Wall(j * (self.width_block + SPACE_BLOCKS),
-                                      i * (self.height_block + SPACE_BLOCKS)+width_scr//10,
+                                      i * (self.height_block + SPACE_BLOCKS)+SCR_WIDTH//10,
                                       self.width_block, self.height_block)
                     self.walls.append(wall_local)
 
@@ -126,4 +123,7 @@ class Map:
         self.pacman.draw(screen)
 
     def check_event(self, event):
-        pass
+        if event == pg.QUIT:
+            sys.exit()
+        else:
+            self.pacman.check_event(event, self)

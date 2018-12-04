@@ -1,23 +1,23 @@
 import pygame as pg
 from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION
-from map import Map
+from classes import Map
 from time import time
 
 
 class Game:
     def __init__(self):
-        self.map = Map()
         self.size = SCR_WIDTH, SCR_HEIGHT
         #SHOULD BE GIVEN MAP SIZE
         self.width = SCR_WIDTH  #Should add smth for scoreboard
         self.height = SCR_HEIGHT
         self.size = (self.width, self.height)
         self.screen = pg.display.set_mode(self.size, pg.RESIZABLE)
+        self.map = Map(self.screen)
         self.gameover = False
         self.fear = False
         self.point_counter = 0
         self.high_score = 0
-        self.font_size = self.map.top // 4
+        self.font_size = int(self.map.top // 4)
         self.death_counter = 0
         self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
 
@@ -38,7 +38,6 @@ class Game:
 
     def process_drawing(self):
         self.screen.fill(BGCOLOR)
-        #SHOULD BE METHOD MAP.DRAW RECEIVING THE SCREEN
         self.map.draw(self.screen)
         self.draw_score()
         pg.display.flip()
@@ -70,5 +69,11 @@ class Game:
             if current_time - self.time_of_fear_start >= FEAR_DURATION:
                 self.fear = False
                 self.time_of_fear_start = None
+                for ghost in self.map.ghosts:
+                    if ghost.alive:
+                        ghost.change_sprites('normal')
+        for ghost in self.map.ghosts:
+            ghost.logic(self.map.pacman, self)
+        self.map.pacman.logic(self.map, self)
 
 

@@ -3,7 +3,8 @@ import sys
 
 from mainloop import Game
 
-def main():
+
+def hello():
     pg.init()
     pg.font.init()
     g = Game()
@@ -11,4 +12,5 @@ def main():
     sys.exit()
 
 
-main()
+if __name__ == '__main__':
+    hello()

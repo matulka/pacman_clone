@@ -9,6 +9,7 @@ class BigSeed(Seed):
         super().__init__(coordinates)
         self.width = self.height = BIG_SEED_SIZE
         self.x, self.y = coordinates
+        self.rect = pg.Rect(self.x, self.y, self.width, self.height)
 
     def make_effect(self, game):
         if self.active:
