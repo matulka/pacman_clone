@@ -2,12 +2,13 @@ import pygame as pg
 from time import time
 from character import Character
 from constants import RIGHT, LEFT, DOWN, UP, BLUE_RELEASE_TIME, RED_RELEASE_TIME, ORANGE_RELEASE_TIME,\
-                        PINK_RELEASE_TIME, DEATH_RELEASE_TIME
+                        PINK_RELEASE_TIME, DEATH_RELEASE_TIME, GSCALING_COEFFICIENT
 
 
 class Ghost(Character):
     def __init__(self, coordinates, ghost_type, wall_size, teleport_coordinates):
         super().__init__(coordinates, wall_size)
+        self.rect.width = self.rect.height = wall_size * GSCALING_COEFFICIENT
         self.teleport_coordinates = teleport_coordinates
         self.alive = True
         self.type = ghost_type  # #blue, red, orange, pink
@@ -36,8 +37,8 @@ class Ghost(Character):
         self.normal_sprites = [[left1, left2], [right1, right2], [up1, up2], [down1, down2]]
         for i in range(len(self.normal_sprites)):
             for j in range(len(self.normal_sprites[i])):
-                self.normal_sprites[i][j] = pg.transform.scale(self.normal_sprites[i][j], (int(wall_size*1.5),\
-                                                                                         int(wall_size*1.5)))
+                self.normal_sprites[i][j] = pg.transform.scale(self.normal_sprites[i][j],\
+                                        (int(wall_size * GSCALING_COEFFICIENT), int(wall_size * GSCALING_COEFFICIENT)))
         self.sprite_matrix = self.normal_sprites
 
         blue1 = pg.image.load('sprites/fear/fear_blue1.png')
@@ -49,7 +50,7 @@ class Ghost(Character):
         for i in range(len(self.fear_sprites)):
             for j in range(len(self.fear_sprites[i])):
                 self.fear_sprites[i][j] = pg.transform.scale(self.fear_sprites[i][j],\
-                                                          (int(wall_size*1.5), int(wall_size*1.5)))
+                                        (int(wall_size * GSCALING_COEFFICIENT), int(wall_size * GSCALING_COEFFICIENT)))
 
         down = pg.image.load('sprites/eyes/eyes_down.png')
         right = pg.image.load('sprites/eyes/eyes_right.png')
@@ -59,7 +60,7 @@ class Ghost(Character):
         for i in range(len(self.eyes_sprites)):
             for j in range(len(self.eyes_sprites[i])):
                 self.eyes_sprites[i][j] = pg.transform.scale(self.eyes_sprites[i][j],\
-                                                          (int(wall_size*1.5), int(wall_size*1.5)))
+                                        (int(wall_size * GSCALING_COEFFICIENT), int(wall_size * GSCALING_COEFFICIENT)))
 
     def change_sprites(self, needed_condition): # # needed_condition = {fear, normal, death}
         self.current_sprite = 0
@@ -87,7 +88,6 @@ class Ghost(Character):
     def logic(self, pacman, game):
         if self.released:
             possible_directions = self.get_possible_directions(game.map)
-            #print(possible_directions)
             gh_x, gh_y = self.rect.x, self.rect.y
             needed_directions = []
 
