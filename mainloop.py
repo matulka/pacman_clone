@@ -1,7 +1,7 @@
 import pygame as pg
-from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE
+from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION
 from map import Map
-from constants import SCR_HEIGHT, SCR_WIDTH
+from time import time
 
 
 class Game:
@@ -20,6 +20,8 @@ class Game:
         self.font_size = self.map.top // 4
         self.death_counter = 0
         self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
+
+        self.time_of_fear_start = None
 
     def main_loop(self):
         while not self.gameover:
@@ -63,6 +65,10 @@ class Game:
 
 
     def process_logic(self):
-        pass
+        if self.fear:
+            current_time = time()
+            if current_time - self.time_of_fear_start >= FEAR_DURATION:
+                self.fear = False
+                self.time_of_fear_start = None
 
 

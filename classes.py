@@ -9,6 +9,7 @@ gameover = False
 size = width_scr, height_scr = SCR_HEIGHT, SCR_WIDTH
 screen = pg.display.set_mode(size)
 
+
 class Wall:
     def __init__(self, x, y, width, height):
         self.x, self.y = x, y
@@ -17,6 +18,7 @@ class Wall:
 
     def draw(self, screen):
         pg.draw.rect(screen, WHITE, self.rect, 0)
+
 
 class Map:
     def __init__(self):
@@ -60,7 +62,6 @@ class Map:
                     big_seed_local = BigSeed(coords)
                     self.seeds.append(big_seed_local)
 
-
     def init_ghosts(self):
         colors = ['blue', 'red', 'orange', 'pink']
         for i in range(len(self.matrix)):
@@ -69,7 +70,7 @@ class Map:
                         or self.matrix[i][j] == 4:
                     coords = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//2.5,
                                    i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
-                    ghost_local = Ghost(coords, colors[self.matrix[i][j]-1], self.width_block)
+                    ghost_local = Ghost(coords, colors[self.matrix[i][j]-1], self.width_block, self.ghosts_teleport)
                     self.ghosts.append(ghost_local)
 
     def init_ghosts_teleport(self):

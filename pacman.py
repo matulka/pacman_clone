@@ -1,7 +1,6 @@
 import pygame as pg
 from character import Character
-from constants import CHARACTER_SPEED, CHARACTER_HEIGHT, CHARACTER_WIDTH, LEFT,\
-    RIGHT, DOWN, UP, PACMAN_RADIUS, YELLOW, BGCOLOR, FPS
+from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS
 
 
 class Pacman(Character):
@@ -54,11 +53,18 @@ class Pacman(Character):
                 self.direction = cur_direction
 
     def logic(self, map, game):
-        for ghost in map.ghosts:
+        for ghost in map.ghosts: # #possible problem that GHOST is passed not by reference
             if self.check_collision_with_ghost(ghost):
-                self.death_animation(game.screen)
-                game.death_counter += 1
-                map.refresh() #SHOULD ADD MAP METHOD
+                if ghost.alive:
+                    if not game.fear:
+                        self.death_animation(game.screen)
+                        game.death_counter += 1
+                        map.refresh()
+                    else:
+                        ghost.alive = False
+                        game.point_counter += GHOST_POINTS
+                        ghost.change_sprites('death')
+
         for seed in map.seeds:
             if self.check_collision_with_seed(seed):
                 seed.make_effect()
