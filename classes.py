@@ -23,6 +23,7 @@ class Map:
         self.width_block, self.height_block = None, None
         self.ghosts_teleport = None
         self.pacman = None
+        self.blocks_width = 0
         self.walls = []
         self.seeds = []
         self.ghosts = []
@@ -105,6 +106,8 @@ class Map:
     def init_walls(self):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
+                if i == 0:
+                    self.blocks_width += self.width_block + SPACE_BLOCKS
                 if self.matrix[i][j] == 8:
                     wall_local = Wall(j * (self.width_block + SPACE_BLOCKS),
                                       i * (self.height_block + SPACE_BLOCKS)+SCR_WIDTH//10,

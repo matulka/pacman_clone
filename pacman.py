@@ -80,10 +80,13 @@ class Pacman(Character):
         self.move()
         if self.check_collision_with_walls(map.walls):
             self.move_back()
-        if self.rect.x < 0:
-            self.rect.x = map.width - self.rect.width
-        if self.rect.x + self.rect.width > int(fabs(map.width)):
-            self.rect.x = 0
+        self.teleport(map)
+
+    def teleport(self, map):
+        if self.rect.x < 0 and self.direction != RIGHT:
+            self.rect.x = map.blocks_width - SPACE_BLOCKS
+        if self.rect.x + self.rect.width > int(fabs(map.width)) and self.direction != LEFT:
+            self.rect.x = -SPACE_BLOCKS
         if self.rect.y < map.top:
             self.rect.y = map.top + int(fabs(map.height)) - self.rect.height
         if self.rect.y + self.rect.height > int(fabs(map.height)) + map.top:
