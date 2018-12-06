@@ -1,6 +1,6 @@
 import pygame as pg
 from character import Character
-from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS, PSCALING_COEFFICIENT
+from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS, PSCALING_COEFFICIENT, SPACE_BLOCKS
 from math import fabs
 
 
@@ -22,8 +22,8 @@ class Pacman(Character):
         for i in range(len(self.sprite_matrix)):
             for j in range(len(self.sprite_matrix[i])):
                 self.sprite_matrix[i][j] = pg.transform.scale(self.sprite_matrix[i][j],\
-                                            (int(wall_size * PSCALING_COEFFICIENT), int(wall_size * PSCALING_COEFFICIENT)))
-
+                                            (int(wall_size + SPACE_BLOCKS * 2), int(wall_size + SPACE_BLOCKS * 2)))
+        self.rect.width = self.rect.height = wall_size + SPACE_BLOCKS * 2
         death1 = pg.image.load('sprites/death/death1.png')
         death2 = pg.image.load('sprites/death/death2.png')
         death3 = pg.image.load('sprites/death/death3.png')

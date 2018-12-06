@@ -6,7 +6,7 @@ class Character:
 
     def __init__(self, coordinates, wall_size):
         self.starting_coordinates = coordinates
-        self.speed = CHARACTER_SPEED
+        self.speed = 6#НУЖНО ДОБАВИТЬ НОРМАЛЬНОЕ ЗНАЧЕНИЕ
         self.direction = -1  # #Направление движения, значения в константах
         self.rect = pg.Rect(coordinates, (PSCALING_COEFFICIENT * wall_size, PSCALING_COEFFICIENT * wall_size))
         self.width = self.rect.width

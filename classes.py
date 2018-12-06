@@ -36,13 +36,14 @@ class Map:
         self.init_seeds()
         self.init_ghosts()
         self.draw(screen)
+        print(self.width_block)
 
     def init_pacman(self):
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 5:
-                    coords = (j * (self.width_block + SPACE_BLOCKS)-self.width_block//2.5,
-                              i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
+                    coords = (j * (self.width_block + SPACE_BLOCKS) - SPACE_BLOCKS,
+                              i * (self.height_block + SPACE_BLOCKS) - SPACE_BLOCKS + self.top)
                     self.pacman = Pacman(coords, self.width_block)
 
     def init_seeds(self):
@@ -85,7 +86,7 @@ class Map:
 
     def init_constants(self):
         n = len(self.matrix[0])
-        self.width_block = self.height_block = ((SCR_WIDTH+SPACE_BLOCKS)/n)-SPACE_BLOCKS
+        self.width_block = self.height_block = ((SCR_WIDTH+SPACE_BLOCKS)//n)-SPACE_BLOCKS
 
     def get_width_height(self):
         self.width = SCR_WIDTH
