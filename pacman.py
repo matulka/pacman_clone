@@ -39,18 +39,23 @@ class Pacman(Character):
         for i in range(len(self.death_sprites)):
             self.death_sprites[i] = pg.transform.scale(self.death_sprites[i],\
                                             (int(wall_size * PSCALING_COEFFICIENT), int(wall_size * PSCALING_COEFFICIENT)))
+        self.try_change_direction = -1
 
     def check_event(self, event, map):
         if event.type == pg.KEYDOWN:
             cur_direction = self.direction
             if event.key == pg.K_a:
                 self.direction = LEFT
+                self.try_change_direction = LEFT
             if event.key == pg.K_d:
                 self.direction = RIGHT
+                self.try_change_direction = RIGHT
             if event.key == pg.K_w:
                 self.direction = UP
+                self.try_change_direction = UP
             if event.key == pg.K_s:
                 self.direction = DOWN
+                self.try_change_direction = DOWN
             if not self.try_move(map):
                 self.direction = cur_direction
 
@@ -71,6 +76,7 @@ class Pacman(Character):
         for seed in map.seeds:
             if self.check_collision_with_seed(seed):
                 seed.make_effect(game)
+        self.change_direction(map)
         self.move()
         if self.check_collision_with_walls(map.walls):
             self.move_back()
@@ -96,3 +102,12 @@ class Pacman(Character):
             return False
         self.move_back()
         return True
+
+    def change_direction(self, map):
+        if (self.try_change_direction != -1):
+            cur_direction = self.direction
+            self.direction = self.try_change_direction
+            if not self.try_move(map):
+                self.direction = cur_direction
+            else:
+                self.try_change_direction = -1
