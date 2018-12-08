@@ -1,8 +1,11 @@
-BLACK = (0, 0, 0)
+BLACK = (0, 0, 0, 0)
 RED = (255, 0, 0)
-WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+WHITE = (255, 255, 255)
+YELLOW = (255, 255, 0)
+BGCOLOR = (0, 0, 0)
+BLUE = (0, 0, 205)
+
 MENU_HEIGHT, MENU_WIDTH = 400, 400
 MAP_PATH = "map_scheme.txt"
 
@@ -13,7 +16,6 @@ LEFT = 0
 RIGHT = 1
 UP = 2
 DOWN = 3
-
 
 PACMAN_RADIUS = 30
 CHARACTER_WIDTH = PACMAN_RADIUS * 2

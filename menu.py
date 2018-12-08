@@ -1,6 +1,7 @@
 import pygame
 from constants import BLACK, GREEN, BLUE, RED, MENU_HEIGHT, MENU_WIDTH, WHITE
 from button import Button
+from mainloop import Game
 
 BUTTON_STYLE = {
     "hover_color": BLUE,
@@ -54,6 +55,7 @@ class Menu:
             if event.type == pygame.QUIT:  # проверка на событие выхода
                 self.gameover = True
 
+
             elif self.phase == 0:
                 self.start_button.check_event(event)
                 self.setting_button.check_event(event)
@@ -75,6 +77,10 @@ class Menu:
             self.setting_button.update(self.screen)
             self.about_button.update(self.screen)
             self.exit_button.update(self.screen)
+
+        elif self.phase == 1:
+            g = Game()
+            g.main_loop()
 
         elif self.phase == 2:
             text = self.my_font.render('Настройки', False, BLUE)

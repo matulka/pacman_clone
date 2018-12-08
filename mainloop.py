@@ -1,4 +1,5 @@
 import pygame as pg
+import sys
 from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER
 from classes import Map
 from time import time
@@ -49,7 +50,7 @@ class Game:
     def process_events(self):
          for event in pg.event.get():
             if event.type == pg.QUIT:
-                self.gameover = True
+                sys.exit()
             self.map.check_event(event)
 
     def process_drawing(self):
