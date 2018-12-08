@@ -1,6 +1,6 @@
 import pygame as pg
 from character import Character
-from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS, PSCALING_COEFFICIENT, SPACE_BLOCKS
+from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS, PSCALING_COEFFICIENT, SPACE_BLOCKS, BGCOLOR
 from math import fabs
 
 
@@ -38,7 +38,7 @@ class Pacman(Character):
         self.death_sprites = [death1, death2, death3, death4, death5, death6, death7, death8, death9, death10, death11]
         for i in range(len(self.death_sprites)):
             self.death_sprites[i] = pg.transform.scale(self.death_sprites[i],\
-                                            (int(wall_size * PSCALING_COEFFICIENT), int(wall_size * PSCALING_COEFFICIENT)))
+                                            (int(wall_size + SPACE_BLOCKS * 2), int(wall_size + SPACE_BLOCKS * 2)))
         self.try_change_direction = -1
 
     def check_event(self, event, map):
@@ -64,9 +64,9 @@ class Pacman(Character):
             if self.check_collision_with_ghost(ghost):
                 if ghost.alive:
                     if not game.fear:
-                        self.death_animation(game.screen)
+                        self.death_animation(game)
                         game.death_counter += 1
-                        map.refresh()
+                        game.refresh()
                     else:
                         print('dead')
                         ghost.alive = False
@@ -92,11 +92,13 @@ class Pacman(Character):
         if self.rect.y + self.rect.height > int(fabs(map.height)) + map.top:
             self.rect.y = map.top
 
-    def death_animation(self, screen):
+    def death_animation(self, game):
         for i in range(len(self.death_sprites)):
             sprite = self.death_sprites[i]
-            screen.blit(sprite, self.rect)
+            game.screen.fill(BGCOLOR)
+            game.screen.blit(sprite, self.rect)
             pg.time.wait(2000 // FPS)
+            pg.display.flip()
 
     def try_move(self, map):
         self.move()
@@ -107,7 +109,7 @@ class Pacman(Character):
         return True
 
     def change_direction(self, map):
-        if (self.try_change_direction != -1):
+        if self.try_change_direction != -1:
             cur_direction = self.direction
             self.direction = self.try_change_direction
             if not self.try_move(map):

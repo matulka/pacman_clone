@@ -127,6 +127,9 @@ class Map:
         self.pacman.draw(screen)
         self.return_coordinates(self.pacman, 'pacman')
 
+    def draw_without_pacman(self):
+        pass
+
     def check_event(self, event):
         if event == pg.QUIT:
             sys.exit()
