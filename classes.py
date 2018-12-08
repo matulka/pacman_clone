@@ -125,7 +125,6 @@ class Map:
             self.ghosts[i].draw(screen)
 
         self.pacman.draw(screen)
-        self.return_coordinates(self.pacman, 'pacman')
 
     def draw_without_pacman(self):
         pass
