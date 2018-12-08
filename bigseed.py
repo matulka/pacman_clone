@@ -20,4 +20,5 @@ class BigSeed(Seed):
             self.active = False
 
     def draw(self, screen):
-        pg.draw.circle(screen, YELLOW, (int(self.x), int(self.y)), BIG_SEED_SIZE)
+        if self.active:
+            pg.draw.circle(screen, YELLOW, (int(self.x), int(self.y)), BIG_SEED_SIZE)
