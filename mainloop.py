@@ -1,5 +1,5 @@
 import pygame as pg
-from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION
+from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER
 from classes import Map
 from time import time
 
@@ -29,6 +29,22 @@ class Game:
             self.process_logic()
             self.process_drawing()
             pg.time.wait(1000 // FPS)
+        self.screen.fill(BGCOLOR)
+        self.font_size = int(self.map.width // 5)
+        self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
+        over = self.font.render("GAME OVER", True, WHITE)
+        self.screen.blit(over, (self.width // 10, self.font_size))
+        high_score_surface = self.font.render("HIGH SCORE", True, WHITE)
+        self.screen.blit(high_score_surface, (self.width // 10,
+                                              self.font_size * 2))
+        high_points = str(self.high_score)
+        if '9' >= high_points >= '0':
+            high_points = '0' + high_points
+        number_surface = self.font.render(high_points, True, WHITE)
+        self.screen.blit(number_surface, (self.width // 10 + high_score_surface.get_width() -
+                                          number_surface.get_width(), 3 * self.font_size))
+        pg.display.flip()
+        pg.time.wait(5000)
 
     def process_events(self):
          for event in pg.event.get():
@@ -77,13 +93,16 @@ class Game:
         self.map.pacman.logic(self.map, self)
 
     def change_high_score(self):
-        if (self.point_counter > self.high_score):
+        if self.point_counter > self.high_score:
             self.high_score = self.point_counter
         self.point_counter = 0
 
     def refresh(self):
-        self.map = Map(self.screen)
-        self.change_high_score()
+        self.check_gameover()
+        if not self.gameover:
+            self.map = Map(self.screen)
+            self.change_high_score()
 
-
-
+    def check_gameover(self):
+        if self.death_counter > MAX_DEATH_COUNTER:
+            self.gameover = True
