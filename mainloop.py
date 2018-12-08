@@ -56,6 +56,7 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.map.draw(self.screen)
         self.draw_score()
+        self.draw_lifes()
         pg.display.flip()
 
     def draw_score(self):
@@ -77,6 +78,17 @@ class Game:
         self.screen.blit(number_surface, (self.width // 5 + cur_score_surface.get_width() +
                                           high_score_surface.get_width() -
                                           number_surface.get_width(), 2 * self.font_size))
+
+    def draw_lifes(self):
+        pucman = pg.image.load('sprites/pacman/pacman_right1.png')
+        rect = pucman.get_rect()
+        lives = self.font.render("lives:", True, WHITE)
+        self.screen.blit(lives, (0, self.map.bottom + 10))
+        rect.y = self.map.bottom + 10
+        rect.x = 10 + lives.get_width()
+        for i in range(MAX_DEATH_COUNTER - self.death_counter):
+            self.screen.blit(pucman, rect)
+            rect.x += 10 + rect.width
 
 
     def process_logic(self):
