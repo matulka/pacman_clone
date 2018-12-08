@@ -126,6 +126,9 @@ class Map:
 
         self.pacman.draw(screen)
 
+    def draw_without_pacman(self):
+        pass
+
     def check_event(self, event):
         if event == pg.QUIT:
             sys.exit()

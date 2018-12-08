@@ -76,4 +76,14 @@ class Game:
             ghost.logic(self.map.pacman, self)
         self.map.pacman.logic(self.map, self)
 
+    def change_high_score(self):
+        if (self.point_counter > self.high_score):
+            self.high_score = self.point_counter
+        self.point_counter = 0
+
+    def refresh(self):
+        self.map = Map(self.screen)
+        self.change_high_score()
+
+
 
