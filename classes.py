@@ -1,10 +1,11 @@
 import pygame as pg
+import sys
 from constants import WHITE, MAP_PATH, SCR_HEIGHT, SCR_WIDTH, SPACE_BLOCKS, BIG_SEED_SIZE
 from smallseed import SmallSeed
 from bigseed import BigSeed
 from ghost import Ghost
 from pacman import Pacman
-import sys
+
 
 
 class Wall:
@@ -37,7 +38,6 @@ class Map:
         self.init_seeds()
         self.init_ghosts()
         self.draw(screen)
-        print(self.width_block)
 
     def init_pacman(self):
         for i in range(len(self.matrix)):
@@ -76,8 +76,8 @@ class Map:
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 9:
-                    self.ghosts_teleport = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//3,
-                                   i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 10)
+                    self.ghosts_teleport = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//2.5,
+                                   i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
 
     def refresh(self):
         self.init_pacman()
@@ -125,9 +125,21 @@ class Map:
             self.ghosts[i].draw(screen)
 
         self.pacman.draw(screen)
+        self.return_coordinates(self.pacman, 'pacman')
 
     def check_event(self, event):
         if event == pg.QUIT:
             sys.exit()
         else:
             self.pacman.check_event(event, self)
+
+    def return_coordinates(self, character, type):
+        c_x, c_y = character.return_coordinates()
+
+        if(type=='pacman'):
+            x_cord = (c_x + SPACE_BLOCKS) // (self.width_block + SPACE_BLOCKS)
+            y_cord = (c_y + SPACE_BLOCKS - self.top) // (self.height_block + SPACE_BLOCKS)
+
+        if(type=='ghost'):
+            x_cord = (c_x+self.width_block//2.5)//(self.width_block+SPACE_BLOCKS)
+            y_cord = (c_y-SCR_HEIGHT//11)//(self.height_block+SPACE_BLOCKS)
