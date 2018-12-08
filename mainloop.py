@@ -20,7 +20,7 @@ class Game:
         self.font_size = int(self.map.top // 4)
         self.death_counter = 0
         self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
-
+        self.best = 0
         self.time_of_fear_start = None
 
     def main_loop(self):
@@ -103,6 +103,19 @@ class Game:
         for ghost in self.map.ghosts:
             ghost.logic(self.map.pacman, self)
         self.map.pacman.logic(self.map, self)
+        if self.map.check_win():
+            self.best += self.point_counter
+            self.high_score = self.best
+            self.point_counter = 0
+            self.screen.fill(BGCOLOR)
+            font_size = int(self.map.width // 10)
+            font = pg.font.SysFont('Comic Sans MS', font_size)
+            over = font.render("Level completed!", True, WHITE)
+            self.screen.blit(over, (self.width // 10, font_size))
+            pg.display.flip()
+            pg.time.wait(5000)
+            self.map = Map(self.screen)
+
 
     def change_high_score(self):
         if self.point_counter > self.high_score:

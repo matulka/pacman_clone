@@ -61,6 +61,13 @@ class Map:
                     big_seed_local = BigSeed(coords)
                     self.seeds.append(big_seed_local)
 
+    def check_win(self):
+        flag = True
+        for i in range(len(self.seeds)):
+            if self.seeds[i].active and type(self.seeds[i]) == SmallSeed:
+                flag = False
+        return flag
+
     def init_ghosts(self):
         colors = ['blue', 'red', 'orange', 'pink']
         for i in range(len(self.matrix)):
