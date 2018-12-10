@@ -63,7 +63,7 @@ class Pacman(Character):
         for ghost in map.ghosts: # #possible problem that GHOST is passed not by reference
             if self.check_collision_with_ghost(ghost):
                 if ghost.alive:
-                    if not game.fear:
+                    if not game.fear or ghost.already_died:
                         self.death_animation(game)
                         game.death_counter += 1
                         game.refresh()

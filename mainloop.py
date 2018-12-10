@@ -106,6 +106,7 @@ class Game:
                 for ghost in self.map.ghosts:
                     if ghost.alive:
                         ghost.change_sprites('normal')
+                    ghost.already_died = False
         for ghost in self.map.ghosts:
             ghost.logic(self.map.pacman, self)
         self.map.pacman.logic(self.map, self)

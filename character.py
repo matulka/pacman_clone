@@ -34,6 +34,14 @@ class Character:
         if self.direction == DOWN:
             self.rect = self.rect.move(0, -1 * self.speed)
 
+    def try_move(self, map):
+        self.move()
+        if self.check_collision_with_walls(map.walls):
+            self.move_back()
+            return False
+        self.move_back()
+        return True
+
     def draw(self, screen):
         sprite = self.sprite_matrix[self.direction][self.current_sprite]
         screen.blit(sprite, self.rect)

@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-from constants import WHITE, MAP_PATH, SCR_HEIGHT, SCR_WIDTH, SPACE_BLOCKS, BIG_SEED_SIZE
+from constants import WHITE, MAP_PATH, SCR_HEIGHT, SCR_WIDTH, SPACE_BLOCKS, BIG_SEED_SIZE, SMALL_SEED_SIZE, TELEPORT
 from smallseed import SmallSeed
 from bigseed import BigSeed
 from ghost import Ghost
@@ -51,13 +51,13 @@ class Map:
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 6:
-                    coords = (j * (self.width_block + SPACE_BLOCKS) + self.width_block//3,
-                              i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 9)
+                    coords = (self.width_block + j * (self.width_block + SPACE_BLOCKS) - (self.width_block + SMALL_SEED_SIZE) // 2,
+                              i * (self.height_block + SPACE_BLOCKS) + self.top + (self.width_block - SMALL_SEED_SIZE) // 2)
                     small_seed_local = SmallSeed(coords)
                     self.seeds.append(small_seed_local)
                 if self.matrix[i][j] == 7:
-                    coords = (j * (self.width_block + SPACE_BLOCKS)+BIG_SEED_SIZE//1.1,
-                              i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 8.9)
+                    coords = (self.width_block + j * (self.width_block + SPACE_BLOCKS) - self.width_block // 2,
+                              i * (self.height_block + SPACE_BLOCKS) + self.top + self.height_block // 2)
                     big_seed_local = BigSeed(coords)
                     self.seeds.append(big_seed_local)
 
@@ -74,8 +74,8 @@ class Map:
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 1 or self.matrix[i][j] == 2 or self.matrix[i][j] == 3\
                         or self.matrix[i][j] == 4:
-                    coords = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//2.5,
-                                   i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
+                    coords = (j * (self.width_block + SPACE_BLOCKS) - SPACE_BLOCKS,
+                              i * (self.height_block + SPACE_BLOCKS) + self.top - SPACE_BLOCKS)
                     ghost_local = Ghost(coords, colors[self.matrix[i][j]-1], self.width_block, self.ghosts_teleport)
                     self.ghosts.append(ghost_local)
 
@@ -83,8 +83,8 @@ class Map:
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 9:
-                    self.ghosts_teleport = (j * (self.width_block + SPACE_BLOCKS) - self.width_block//2.5,
-                                   i * (self.height_block + SPACE_BLOCKS) + SCR_HEIGHT // 11)
+                    self.ghosts_teleport = (j * (self.width_block + SPACE_BLOCKS),
+                                   self.top + i * (self.width_block + SPACE_BLOCKS) - SPACE_BLOCKS)
 
     def refresh(self):
         self.init_pacman()
@@ -142,31 +142,25 @@ class Map:
         else:
             self.pacman.check_event(event, self)
 
-    def return_coordinates(self, character, type):
+    def return_coordinates(self, character):
         c_x, c_y = character.return_coordinates()
+        j = (c_x + SPACE_BLOCKS) // (self.width_block + SPACE_BLOCKS)
+        i = (c_y + SPACE_BLOCKS - self.top) // (self.height_block + SPACE_BLOCKS)
 
-        if(type=='pacman'):
-            x_cord = (c_x + SPACE_BLOCKS) / (self.width_block + SPACE_BLOCKS)
-            y_cord = (c_y + SPACE_BLOCKS - self.top) / (self.height_block + SPACE_BLOCKS)
+        return int(i), int(j)
 
-        if(type=='ghost'):
-            x_cord = (c_x+self.width_block//2.5)//(self.width_block+SPACE_BLOCKS)
-            y_cord = (c_y-SCR_HEIGHT//11)//(self.height_block+SPACE_BLOCKS)
-
-        return x_cord, y_cord
-
-    def has_two_blocks(self, character, type):
+    def has_two_blocks(self, character):
         c_x, c_y = character.return_coordinates()
-
-        if(type=='pacman'):
-            x_cord = (c_x + SPACE_BLOCKS) / (self.width_block + SPACE_BLOCKS)
-            y_cord = (c_y + SPACE_BLOCKS - self.top) / (self.height_block + SPACE_BLOCKS)
-
-        if(type=='ghost'):
-            x_cord = (c_x+self.width_block//2.5)/(self.width_block+SPACE_BLOCKS)
-            y_cord = (c_y-SCR_HEIGHT//11)/(self.height_block+SPACE_BLOCKS)
+        x_cord = (c_x + SPACE_BLOCKS) / (self.width_block + SPACE_BLOCKS)
+        y_cord = (c_y + SPACE_BLOCKS - self.top) / (self.height_block + SPACE_BLOCKS)
 
         if x_cord - int(x_cord) == 0 and y_cord - int(y_cord) == 0:
             return False
         else:
             return True
+
+    def return_teleport_coordinates(self):
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[0])):
+                if self.matrix[i][j] == TELEPORT:
+                    return (i, j)
