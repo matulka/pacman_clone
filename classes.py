@@ -146,9 +146,27 @@ class Map:
         c_x, c_y = character.return_coordinates()
 
         if(type=='pacman'):
-            x_cord = (c_x + SPACE_BLOCKS) // (self.width_block + SPACE_BLOCKS)
-            y_cord = (c_y + SPACE_BLOCKS - self.top) // (self.height_block + SPACE_BLOCKS)
+            x_cord = (c_x + SPACE_BLOCKS) / (self.width_block + SPACE_BLOCKS)
+            y_cord = (c_y + SPACE_BLOCKS - self.top) / (self.height_block + SPACE_BLOCKS)
 
         if(type=='ghost'):
             x_cord = (c_x+self.width_block//2.5)//(self.width_block+SPACE_BLOCKS)
             y_cord = (c_y-SCR_HEIGHT//11)//(self.height_block+SPACE_BLOCKS)
+
+        return x_cord, y_cord
+
+    def has_two_blocks(self, character, type):
+        c_x, c_y = character.return_coordinates()
+
+        if(type=='pacman'):
+            x_cord = (c_x + SPACE_BLOCKS) / (self.width_block + SPACE_BLOCKS)
+            y_cord = (c_y + SPACE_BLOCKS - self.top) / (self.height_block + SPACE_BLOCKS)
+
+        if(type=='ghost'):
+            x_cord = (c_x+self.width_block//2.5)/(self.width_block+SPACE_BLOCKS)
+            y_cord = (c_y-SCR_HEIGHT//11)/(self.height_block+SPACE_BLOCKS)
+
+        if x_cord - int(x_cord) == 0 and y_cord - int(y_cord) == 0:
+            return False
+        else:
+            return True

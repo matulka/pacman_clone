@@ -1,12 +1,14 @@
 import pygame as pg
+import sys
 from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER
 from classes import Map
 from time import time
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, menu):
         self.size = SCR_WIDTH, SCR_HEIGHT
+        self.menu = menu
         #SHOULD BE GIVEN MAP SIZE
         self.width = SCR_WIDTH  #Should add smth for scoreboard
         self.height = SCR_HEIGHT
@@ -49,7 +51,11 @@ class Game:
     def process_events(self):
          for event in pg.event.get():
             if event.type == pg.QUIT:
-                self.gameover = True
+                sys.exit()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    self.menu.escape()
+                    self.menu.main_loop()
             self.map.check_event(event)
 
     def process_drawing(self):
@@ -131,3 +137,6 @@ class Game:
     def check_gameover(self):
         if self.death_counter > MAX_DEATH_COUNTER:
             self.gameover = True
+
+    def quit(self):
+        sys.exit()
