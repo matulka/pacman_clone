@@ -2,7 +2,7 @@ import pygame as pg
 from time import time
 from character import Character
 from constants import RIGHT, LEFT, DOWN, UP, BLUE_RELEASE_TIME, RED_RELEASE_TIME, ORANGE_RELEASE_TIME,\
-    PINK_RELEASE_TIME, DEATH_RELEASE_TIME, EMPTY, SEED, BIG_SEED, SPACE_BLOCKS, TELEPORT, PACMAN
+    PINK_RELEASE_TIME, DEATH_RELEASE_TIME, EMPTY, SEED, BIG_SEED, SPACE_BLOCKS, TELEPORT, PACMAN, FEAR_DURATION, LAST_EPISODE_FEAR
 import queue
 
 
@@ -47,11 +47,16 @@ class Ghost(Character):
         blue2 = pg.image.load('sprites/fear/fear_blue2.png')
         white1 = pg.image.load('sprites/fear/fear_white1.png')
         white2 = pg.image.load('sprites/fear/fear_white2.png')
-        self.fear_sprites = [[blue1, blue2, white1, white2], [blue1, blue2, white1, white2],\
+        self.fear_sprites = [[blue1, blue2], [blue1, blue2], [blue1, blue2], [blue1, blue2]]
+        self.fear_sprites2 = [[blue1, blue2, white1, white2], [blue1, blue2, white1, white2],\
                         [blue1, blue2, white1, white2], [blue1, blue2, white1, white2]]
         for i in range(len(self.fear_sprites)):
             for j in range(len(self.fear_sprites[i])):
                 self.fear_sprites[i][j] = pg.transform.scale(self.fear_sprites[i][j], \
+                                            (int(wall_size + SPACE_BLOCKS * 2), int(wall_size + SPACE_BLOCKS * 2)))
+        for i in range(len(self.fear_sprites2)):
+            for j in range(len(self.fear_sprites2[i])):
+                self.fear_sprites2[i][j] = pg.transform.scale(self.fear_sprites2[i][j], \
                                             (int(wall_size + SPACE_BLOCKS * 2), int(wall_size + SPACE_BLOCKS * 2)))
 
         down = pg.image.load('sprites/eyes/eyes_down.png')
@@ -70,6 +75,8 @@ class Ghost(Character):
             self.sprite_matrix = self.normal_sprites
         elif needed_condition == 'fear':
             self.sprite_matrix = self.fear_sprites
+        elif needed_condition == 'fear2':
+            self.sprite_matrix = self.fear_sprites2
         elif needed_condition == 'death':
             self.sprite_matrix = self.eyes_sprites
 
@@ -136,18 +143,14 @@ class Ghost(Character):
                 self.direction = self.bfs(game.map.return_coordinates(pacman), game.map, possible_directions)
                 if game.fear and not self.already_died:
                     possible_directions.remove(self.direction)
-                    '''if self.direction == RIGHT:
-                        self.direction = LEFT
-                    elif self.direction == LEFT:
-                        self.direction = RIGHT
-                    elif self.direction == DOWN:
-                        self.direction = UP
-                    else:
-                        self.direction = DOWN'''
                     if old_direction in possible_directions:
                         self.direction = old_direction
                     else:
                         self.direction = possible_directions[0]
+
+                    # #проверка, надо ли поменять спрайты на мигающего призрака
+                    if FEAR_DURATION - game.time_fear <= LAST_EPISODE_FEAR and self.sprite_matrix != self.fear_sprites2:
+                        self.change_sprites('fear2')
                 if self.try_move(game.map):
                     self.move()
                 else:
@@ -201,7 +204,6 @@ class Ghost(Character):
                     self.time_to_release = 0
                     self.starting_time = None
                     self.rect.x, self.rect.y = self.teleport_coordinates
-
 
 
 def push_direction(coordinates, map_scheme, bfs_queue, used):
