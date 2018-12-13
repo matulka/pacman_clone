@@ -1,5 +1,5 @@
 import pygame as pg
-from constants import CHARACTER_SPEED, LEFT, RIGHT, DOWN, UP, PSCALING_COEFFICIENT
+from constants import CHARACTER_SPEED, LEFT, RIGHT, DOWN, UP
 
 
 class Character:
@@ -7,9 +7,9 @@ class Character:
     def __init__(self, coordinates, wall_size):
         self.starting_coordinates = coordinates
         self.x, self.y = coordinates
-        self.speed = 6 #НУЖНО ДОБАВИТЬ НОРМАЛЬНОЕ ЗНАЧЕНИЕ
+        self.speed = CHARACTER_SPEED #НУЖНО ДОБАВИТЬ НОРМАЛЬНОЕ ЗНАЧЕНИЕ
         self.direction = -1  # #Направление движения, значения в константах
-        self.rect = pg.Rect(coordinates, (PSCALING_COEFFICIENT * wall_size, PSCALING_COEFFICIENT * wall_size))
+        self.rect = pg.Rect(coordinates, (0, 0)) # #реальные значения будут инициализированы в дочерних классах
         self.width = self.rect.width
         self.height = self.rect.height
         self.current_sprite = 0

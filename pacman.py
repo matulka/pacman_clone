@@ -1,6 +1,6 @@
 import pygame as pg
 from character import Character
-from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS, PSCALING_COEFFICIENT, SPACE_BLOCKS, BGCOLOR
+from constants import LEFT, RIGHT, DOWN, UP, FPS, GHOST_POINTS, SPACE_BLOCKS, BGCOLOR, EYES_SPEED
 from math import fabs
 
 
@@ -40,6 +40,7 @@ class Pacman(Character):
             self.death_sprites[i] = pg.transform.scale(self.death_sprites[i],\
                                             (int(wall_size + SPACE_BLOCKS * 2), int(wall_size + SPACE_BLOCKS * 2)))
         self.try_change_direction = -1
+        self.not_dead = True
 
     def check_event(self, event, map):
         if event.type == pg.KEYDOWN:
@@ -60,18 +61,20 @@ class Pacman(Character):
                 self.direction = cur_direction
 
     def logic(self, map, game):
+        print(self.not_dead)
         for ghost in map.ghosts: # #possible problem that GHOST is passed not by reference
             if self.check_collision_with_ghost(ghost):
                 if ghost.alive:
-                    if not game.fear or ghost.already_died:
+                    if (not game.fear or ghost.already_died) and self.not_dead:
+                        self.not_dead = False
                         self.death_animation(game)
                         game.death_counter += 1
                         game.refresh()
                     else:
-                        print('dead')
                         ghost.alive = False
                         game.point_counter += GHOST_POINTS
                         ghost.change_sprites('death')
+                        ghost.speed = EYES_SPEED
 
         for seed in map.seeds:
             if self.check_collision_with_seed(seed):

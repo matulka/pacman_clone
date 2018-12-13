@@ -24,6 +24,7 @@ class Game:
         self.font = pg.font.SysFont('Comic Sans MS', self.font_size)
         self.best = 0
         self.time_of_fear_start = None
+        self.time_fear = None
 
     def main_loop(self):
         while not self.gameover:
@@ -96,13 +97,14 @@ class Game:
             self.screen.blit(pucman, rect)
             rect.x += 10 + rect.width
 
-
     def process_logic(self):
         if self.fear:
             current_time = time()
-            if current_time - self.time_of_fear_start >= FEAR_DURATION:
+            self.time_fear = current_time - self.time_of_fear_start
+            if self.time_fear >= FEAR_DURATION:
                 self.fear = False
                 self.time_of_fear_start = None
+                self.time_fear = None
                 for ghost in self.map.ghosts:
                     if ghost.alive:
                         ghost.change_sprites('normal')
@@ -130,6 +132,9 @@ class Game:
         self.point_counter = 0
 
     def refresh(self):
+        self.fear = False
+        self.time_fear = None
+        self.time_of_fear_start = None
         self.check_gameover()
         if not self.gameover:
             self.map = Map(self.screen)
