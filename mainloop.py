@@ -132,6 +132,9 @@ class Game:
         self.point_counter = 0
 
     def refresh(self):
+        self.fear = False
+        self.time_fear = None
+        self.time_of_fear_start = None
         self.check_gameover()
         if not self.gameover:
             self.map = Map(self.screen)

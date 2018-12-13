@@ -2,7 +2,8 @@ import pygame as pg
 from time import time
 from character import Character
 from constants import RIGHT, LEFT, DOWN, UP, BLUE_RELEASE_TIME, RED_RELEASE_TIME, ORANGE_RELEASE_TIME,\
-    PINK_RELEASE_TIME, DEATH_RELEASE_TIME, EMPTY, SEED, BIG_SEED, SPACE_BLOCKS, TELEPORT, PACMAN, FEAR_DURATION, LAST_EPISODE_FEAR
+    PINK_RELEASE_TIME, DEATH_RELEASE_TIME, EMPTY, SEED, BIG_SEED, SPACE_BLOCKS, TELEPORT,\
+    PACMAN, FEAR_DURATION, LAST_EPISODE_FEAR, CHARACTER_SPEED
 import queue
 
 
@@ -134,6 +135,29 @@ class Ghost(Character):
         else:
             return self.direction
 
+    def move_to_wall(self, game):
+        for i in range(self.speed - 1):
+            if self.direction == RIGHT:
+                self.rect.x += 1
+                if self.check_collision_with_walls(game.map.walls):
+                    self.rect.x -= 1
+                    break
+            elif self.direction == LEFT:
+                self.rect.x -= 1
+                if self.check_collision_with_walls(game.map.walls):
+                    self.rect.x += 1
+                    break
+            elif self.direction == UP:
+                self.rect.y -= 1
+                if self.check_collision_with_walls(game.map.walls):
+                    self.rect.y += 1
+                    break
+            else:
+                self.rect.y += 1
+                if self.check_collision_with_walls(game.map.walls):
+                    self.rect.y -= 1
+                    break
+
     def logic(self, pacman, game):
         if self.released:
 
@@ -154,28 +178,7 @@ class Ghost(Character):
                 if self.try_move(game.map):
                     self.move()
                 else:
-                    for i in range(self.speed - 1):
-                        if self.direction == RIGHT:
-                            self.rect.x += 1
-                            if self.check_collision_with_walls(game.map.walls):
-                                self.rect.x -= 1
-                                break
-                        elif self.direction == LEFT:
-                            self.rect.x -= 1
-                            if self.check_collision_with_walls(game.map.walls):
-                                self.rect.x += 1
-                                break
-                        elif self.direction == UP:
-                            self.rect.y -= 1
-                            if self.check_collision_with_walls(game.map.walls):
-                                self.rect.y += 1
-                                break
-                        else:
-                            self.rect.y += 1
-                            if self.check_collision_with_walls(game.map.walls):
-                                self.rect.y -= 1
-                                break
-
+                    self.move_to_wall(game)
             else:
                 teleport_coordinates = game.map.return_teleport_coordinates()
                 self_coordinates = game.map.return_coordinates(self)
@@ -190,7 +193,10 @@ class Ghost(Character):
                     self.direction = self.bfs(teleport_coordinates, game.map, possible_directions)
                     if self.try_move(game.map):
                         self.move()
+                    else:
+                        self.move_to_wall(game)
         else:
+            self.speed = CHARACTER_SPEED
             if self.starting_time is None:
                 self.starting_time = time()
             else:
