@@ -61,7 +61,6 @@ class Pacman(Character):
                 self.direction = cur_direction
 
     def logic(self, map, game):
-        print(self.not_dead)
         for ghost in map.ghosts: # #possible problem that GHOST is passed not by reference
             if self.check_collision_with_ghost(ghost):
                 if ghost.alive:
