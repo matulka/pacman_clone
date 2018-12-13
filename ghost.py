@@ -130,8 +130,13 @@ class Ghost(Character):
 
         i, j = destination_coordinates
 
-        if directions[i][j] in possible_directions:
-            return directions[i][j]
+        try:
+            dir = directions[i][j]
+        except IndexError:
+            dir = self.direction
+
+        if dir in possible_directions:
+            return dir
         else:
             return self.direction
 
