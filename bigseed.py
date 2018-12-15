@@ -1,5 +1,5 @@
 from seed import Seed
-from constants import BIG_SEED_SIZE, YELLOW
+from constants import BIG_SEED_SIZE, YELLOW, FEAR_SPEED
 import pygame as pg
 from time import time
 
@@ -16,6 +16,7 @@ class BigSeed(Seed):
             game.fear = True  # #позже надо будет сделать взаимодействие с таймером на карте
             for ghost in game.map.ghosts: # #может быть проблема, что призраки передаются не по ссылке
                 ghost.change_sprites('fear')
+                ghost.speed = FEAR_SPEED
             game.time_of_fear_start = time()
             self.active = False
 

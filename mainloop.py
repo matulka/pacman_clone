@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER
+from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER, CHARACTER_SPEED
 from classes import Map
 from time import time
 
@@ -70,8 +70,8 @@ class Game:
         cur_score_surface = self.font.render("CURRENT SCORE", True, WHITE)
         self.screen.blit(cur_score_surface, (self.width // 10, self.font_size))
         cur_points = str(self.point_counter)
-        if '9' >= cur_points >= '0':
-            cur_points = '0' + cur_points
+        if cur_points == '0':
+           cur_points = '0' + cur_points
         number_surface = self.font.render(cur_points, True, WHITE)
         self.screen.blit(number_surface, (self.width // 10 + cur_score_surface.get_width() -
                                           number_surface.get_width(), 2 * self.font_size))
@@ -79,7 +79,7 @@ class Game:
         self.screen.blit(high_score_surface, (self.width // 5 + cur_score_surface.get_width(),
                                               self.font_size))
         high_points = str(self.high_score)
-        if '9' >= high_points >= '0':
+        if high_points == '0':
             high_points = '0' + high_points
         number_surface = self.font.render(high_points, True, WHITE)
         self.screen.blit(number_surface, (self.width // 5 + cur_score_surface.get_width() +
@@ -108,6 +108,7 @@ class Game:
                 for ghost in self.map.ghosts:
                     if ghost.alive:
                         ghost.change_sprites('normal')
+                        ghost.speed = CHARACTER_SPEED
                     ghost.already_died = False
         for ghost in self.map.ghosts:
             ghost.logic(self.map.pacman, self)
@@ -142,6 +143,7 @@ class Game:
 
     def check_gameover(self):
         if self.death_counter > MAX_DEATH_COUNTER:
+            self.change_high_score()
             self.gameover = True
 
     def quit(self):
