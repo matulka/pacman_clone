@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER
+from constants import SCR_HEIGHT, SCR_WIDTH, FPS, BGCOLOR, WHITE, FEAR_DURATION, MAX_DEATH_COUNTER, CHARACTER_SPEED
 from classes import Map
 from time import time
 
@@ -108,6 +108,7 @@ class Game:
                 for ghost in self.map.ghosts:
                     if ghost.alive:
                         ghost.change_sprites('normal')
+                        ghost.speed = CHARACTER_SPEED
                     ghost.already_died = False
         for ghost in self.map.ghosts:
             ghost.logic(self.map.pacman, self)
